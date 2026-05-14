@@ -1,0 +1,36 @@
+﻿@page "/products"
+@using VaanavilAngaadi.Models
+@inject HttpClient Http
+
+<h3>Products</h3>
+
+@if (products == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in products)
+        {
+            <div class="col-12 col-md-6 mb-3">
+                <div class="card p-3">
+                    <h5>@item.Name</h5>
+                    <p>₹@item.Price</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+
+    private List<Product>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<List<Product>>(
+            "/api/product"
+        );
+    }
+}
